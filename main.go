@@ -196,5 +196,5 @@ func main() {
 		println("Connected to MongoDB")
 	}
 
-	filepath.WalkDir("../chapters/", walk)
+	filepath.WalkDir("chapters/", walk)
 }
