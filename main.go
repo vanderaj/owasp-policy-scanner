@@ -394,6 +394,11 @@ func checkForOldPolicy(filename string, d fs.DirEntry) error {
 	return nil
 }
 
+// check if not meetup, then we manually look for other platforms (ConnPass, etc)
+func checkNonAutomatedPlatforms() {
+	// ConnPass, EventBrite, Facebook Groups, etc
+}
+
 // Tab filename and title metadata is incorrect
 func checkTabTags() {
 
