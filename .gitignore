@@ -19,3 +19,6 @@ c?.json
 chapters_*.txt
 chapters/
 test.txt
+scanner
+full_status.txt
+scanner_output.json
