@@ -58,8 +58,10 @@ The tool doesn't use so many Meetup queries (yet) to need a Meetup API key, but 
 
 ### Comprehensive scan with all the bells and whistles
 
+This will take a LOT of time and need a GitHub API token. The results will be saved in the scanner_results.json file, but you can watch progress on the console or go make an espresso.
+
 ```
-% ./scanner -githubkey xxxxxxxx -meetup -gitpull 
+% ./scanner -githubkey xxxxxxxx -meetup -gitpull -pages
 OWASP Policy Scanner Tool
 
 Scanning chapter  www-chapter-london
