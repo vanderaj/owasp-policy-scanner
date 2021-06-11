@@ -64,22 +64,25 @@ This will take a LOT of time and need a GitHub API token. The results will be sa
 % ./scanner -githubkey xxxxxxxx -meetup -gitpull -pages
 OWASP Policy Scanner Tool
 
-Scanning chapter  www-chapter-london
-Info: Updating www-chapter-london
+Scanning chapter  www-chapter-aarhus
+Info: Updating www-chapter-aarhus
 Already up to date.
-Info: GitHub Pages published for www-chapter-london
-Info: .gitignore does not have _site in file chapters/www-chapter-london/.gitignore
-Info: .gitignore does not have Gemfile.lock in file chapters/www-chapter-london/.gitignore
-Info: Meetup OWASP-London exists, is active, 1202 members, 0 upcoming events, 25 past events
+Info: GitHub Pages published for www-chapter-aarhus
+Info: .gitignore does not have _site in file chapters/www-chapter-aarhus/.gitignore
+Info: .gitignore does not have Gemfile.lock in file chapters/www-chapter-aarhus/.gitignore
+Info: Meetup OWASP-Aarhus-Chapter exists, is active, 274 members, 0 upcoming events, 7 past events
 Info: Meetup metadata and JavaScript present
-High: Old individual membership link in chapters/www-chapter-london/info.md on line 2
-Low: Old wiki link found in chapters/www-chapter-london/info.md on line 2
-High: Old donate mechanism in chapters/www-chapter-london/tab_pastevents.md on line 394
-High: Old conference policy in chapters/www-chapter-london/tab_pastevents.md on line 287
-High: Old conference policy in chapters/www-chapter-london/tab_pastevents.md on line 424
-High: Old conference policy in chapters/www-chapter-london/tab_pastevents.md on line 533
-High: Old conference policy in chapters/www-chapter-london/tab_pastevents.md on line 605
-Low: Old wiki link found in chapters/www-chapter-london/tab_pastevents.md on line 287
+
+Scanning chapter  www-chapter-abidjan
+Info: Updating www-chapter-abidjan
+Already up to date.
+Info: GitHub Pages published for www-chapter-abidjan
+Info: .gitignore does not have _site in file chapters/www-chapter-abidjan/.gitignore
+Info: .gitignore does not have Gemfile.lock in file chapters/www-chapter-abidjan/.gitignore
+Low: Example tab found at: chapters/www-chapter-abidjan/tab_example.md
+
+Scanning chapter  www-chapter-abu-dhabi
+...
 ```
 ### Running it on a single chapter
 
