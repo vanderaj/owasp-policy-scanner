@@ -227,6 +227,7 @@ func checkLeaderCount(filename string, d fs.DirEntry) error {
 
 	if leaders < 2 || leaders > 5 {
 		printStatus(Policy, fmt.Sprintf("%s has %d leaders", currChapter, leaders))
+		chapterStatus[currChapter].Leaders = leaders
 	}
 
 	chapterStatus[currChapter].Leaders = leaders

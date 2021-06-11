@@ -35,7 +35,7 @@ func loadConfig() configT {
 
 	config = configT{}
 
-	config.gitPull = true
+	config.gitPull = false
 	config.build = false
 	config.meetup = false
 	config.pages = false
