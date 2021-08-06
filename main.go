@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/mail"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -203,6 +204,18 @@ func checkLeaderCount(filename string, d fs.DirEntry) error {
 		return nil
 	}
 
+	// the leaders tab is not the official source of leadership information
+	if strings.HasSuffix(filename, "tab_leaders.md") {
+		return nil
+	}
+
+	// Check that only the top leaders.md file is parsed
+	// Only www-chapter-<chaptername>/leaders.md counts as a leader
+	reg := regexp.MustCompile(`chapters\/www-chapter-.*\/(.*)(/)leaders.md`)
+	if reg.MatchString(filename) {
+		return nil
+	}
+
 	f, err := os.Open(filename)
 	if err != nil {
 		return err
@@ -213,16 +226,69 @@ func checkLeaderCount(filename string, d fs.DirEntry) error {
 	scanner := bufio.NewScanner(f)
 
 	leaders := 0
-	var emailRegex = regexp.MustCompile("[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*")
 
-	line := 1
 	// https://golang.org/pkg/bufio/#Scanner.Scan
 	for scanner.Scan() {
-		if strings.Contains(scanner.Text(), "* ") && emailRegex.Match(scanner.Bytes()) {
-			leaders++
+
+		email := scanner.Text()
+		email = strings.TrimLeft(email, "* ")
+		email = strings.TrimLeft(email, "- ")
+		email = strings.TrimSpace(email)
+
+		// skip blank lines
+		if email == "" {
+			continue
 		}
 
-		line++
+		// Skip headers
+		if strings.Contains(email, "#") {
+			continue
+		}
+
+		// Skip lines without an @ symbol
+		if !strings.Contains(email, "@") {
+			continue
+		}
+
+		// Check to see if it's a Markdown mailto: and trim accordingly
+		if strings.Contains(email, "[") && strings.Contains(email, "mailto") {
+			// trim to just the email address bit
+			reg := regexp.MustCompile(`^.*mailto:`)
+			email = reg.ReplaceAllString(email, "${1}")
+			reg = regexp.MustCompile(`\).*$`)
+			email = reg.ReplaceAllLiteralString(email, "")
+			email = strings.Replace(email, "/", "", -1)
+		}
+
+		// Check to see if it's a Mardown without a mailto
+		if strings.Contains(email, "[") && !strings.Contains(email, "mailto") {
+			// trim to just the email address bit
+			reg := regexp.MustCompile(`^.*\(`)
+			email = reg.ReplaceAllString(email, "${1}")
+			reg = regexp.MustCompile(`\).*$`)
+			email = reg.ReplaceAllLiteralString(email, "")
+			email = strings.Replace(email, "/", "", -1)
+		}
+
+		// Some emails are like this "* <demo text>" but aren't real
+
+		if strings.HasPrefix(email, "* ") || strings.HasPrefix(email, "- ") {
+			email = strings.Replace(email, "* ", "", 1)
+			email = strings.Replace(email, "- ", "", 1)
+		}
+
+		email = strings.TrimSpace(email)
+
+		_, err := mail.ParseAddress(email)
+		if err != nil {
+			if err.Error() == "mail: no angle-addr" {
+				printStatus(Low, "checkLeaderCount leader has no email: "+email)
+			} else {
+				printStatus(Info, "checkLeaderCount error: "+err.Error())
+			}
+		} else {
+			leaders++
+		}
 	}
 
 	if leaders < 2 || leaders > 5 {
